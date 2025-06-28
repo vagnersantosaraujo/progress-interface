@@ -13,6 +13,7 @@ const displayNivel = document.querySelector('#display-nivel');
 const displayXp = document.querySelector('#display-xp');
 const badgesContainer = document.querySelector('#badges-container');
 const actionButtons = document.querySelectorAll('.action-btn');
+const ajudaBtn = document.querySelector('#btn-ajuda'); // << ADICIONE ESTA LINHA
 
 let progressoAtual = {};
 let docIdAtual = '';
@@ -112,4 +113,13 @@ actionButtons.forEach(button => {
             console.error("Erro ao atualizar XP: ", error);
         });
     });
+});
+// --- Lógica para o novo botão de ajuda ---
+ajudaBtn.addEventListener('click', function() {
+    alert(
+        'Bem-vindo ao Painel de Progresso!\n\n' +
+        '1. Cole o ID do seu documento do Firestore e clique em "Carregar Progresso".\n' +
+        '2. Use os botões de ação para registrar as tarefas concluídas e ganhar XP.\n' +
+        '3. Seu progresso é salvo automaticamente no Firestore a cada ação.'
+    );
 });
