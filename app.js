@@ -55,9 +55,13 @@ function renderizarRoteiro(dados) {
             const topicosConcluidosNesteModulo = topicosConcluidos.filter(t => topicosDoModulo.includes(t)).length;
             const percentual = (topicosDoModulo.length > 0) ? (topicosConcluidosNesteModulo / topicosDoModulo.length) * 100 : 0;
             
+            // Esta é a linha que precisa ser corrigida no seu app.js
             conteudoExtra = `
-                <div class="progress-bar-container">
-                    <div class="progress-bar-fill" style="width: ${percentual}%;"></div>
+                <div class="progress-wrapper">
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" style="width: ${percentual}%;"></div>
+                    </div>
+                    <span class="progress-text">${Math.round(percentual)}%</span>
                 </div>
             `;
         } else {
