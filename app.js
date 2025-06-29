@@ -1,12 +1,26 @@
 // Configuração do Firebase (a sua deve estar aqui)
 // A configuração foi movida para o arquivo config.js
 
+// Adicione no topo do app.js
+const ROTEIRO_APRENDIZAGEM = [
+    { nome: "1. Fundamentos da Web", topicos: ["HTML", "CSS", "JavaScript Básico", "DOM Manipulation"] },
+    { nome: "2. Ferramentas Essenciais", topicos: ["Git e Controle de Versão", "GitHub (Pull Requests, Issues)"] },
+    { nome: "3. Programação Avançada", topicos: ["Estruturas de Dados", "Algoritmos", "Padrões de Projeto"] },
+    { nome: "4. Ecossistema React", topicos: ["Fundamentos do React", "Hooks", "Gerenciamento de Estado"] },
+    { nome: "5. React Native", topicos: ["Componentes Nativos", "Navegação", "APIs Nativas"] },
+    { nome: "6. Publicação", topicos: ["Build e Assinatura", "Google Play Console", "App Store Connect"] }
+];
+
+// O resto do seu código app.js começa aqui...
+// const firebaseConfig = ... (se estiver aqui) ou a inicialização do Firebase
+
 // Inicialização e referências
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 console.log("Firebase conectado e pronto para usar!");
 
 // Seleção de Elementos
+const roteiroContainer = document.querySelector('#roteiro-container'); // << Novo Seletor
 const idInput = document.querySelector('#firestore-id');
 const carregarBtn = document.querySelector('#carregar-progresso-btn');
 const displayNivel = document.querySelector('#display-nivel');
@@ -17,6 +31,70 @@ const ajudaBtn = document.querySelector('#btn-ajuda'); // << ADICIONE ESTA LINHA
 
 let progressoAtual = {};
 let docIdAtual = '';
+
+// --- NOVA FUNÇÃO PARA RENDERIZAR O ROTEIRO ---
+function renderizarRoteiro(dados) {
+    roteiroContainer.innerHTML = ''; // Limpa o container
+    
+    const moduloAtualNome = dados.modulo_atual;
+    const topicosConcluidos = dados.topicos_concluidos || [];
+    
+    const indiceModuloAtual = ROTEIRO_APRENDIZAGEM.findIndex(m => m.nome === moduloAtualNome);
+
+    ROTEIRO_APRENDIZAGEM.forEach((modulo, index) => {
+        const moduloElement = document.createElement('div');
+        let classeModulo = 'modulo-item';
+        let conteudoExtra = '';
+
+        if (index < indiceModuloAtual) {
+            classeModulo += ' modulo-concluido';
+            conteudoExtra = '<span>✔</span>';
+        } else if (index === indiceModuloAtual) {
+            classeModulo += ' modulo-atual';
+            const topicosDoModulo = modulo.topicos;
+            const topicosConcluidosNesteModulo = topicosConcluidos.filter(t => topicosDoModulo.includes(t)).length;
+            const percentual = (topicosDoModulo.length > 0) ? (topicosConcluidosNesteModulo / topicosDoModulo.length) * 100 : 0;
+            
+            conteudoExtra = `
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" style="width: ${percentual}%;"></div>
+                </div>
+            `;
+        } else {
+            classeModulo += ' modulo-futuro';
+        }
+        
+        moduloElement.className = classeModulo;
+        moduloElement.innerHTML = `<span>${modulo.nome}</span>${conteudoExtra}`;
+        roteiroContainer.appendChild(moduloElement);
+    });
+}
+
+
+// Função para exibir os dados no painel principal (Nível e XP)
+function exibirProgresso(dados) {
+    // ... (código existente desta função) ...
+}
+
+// Evento do botão Carregar Progresso (ATUALIZADO)
+carregarBtn.addEventListener('click', function() {
+    docIdAtual = idInput.value;
+    if (!docIdAtual) { return; }
+
+    db.collection('progresso_alunos').doc(docIdAtual).get()
+        .then(doc => {
+            if (doc.exists) {
+                const dados = doc.data();
+                exibirProgresso(dados); // Função antiga para Nível/XP
+                renderizarRoteiro(dados); // <<-- CHAMAMOS A NOVA FUNÇÃO AQUI
+                verificarEConcederMedalhas(dados);
+            } else { /* ... */ }
+        })
+        .catch(error => { /* ... */ });
+});
+
+// ... (Resto do seu código: actionButtons.forEach, ajudaBtn.addEventListener) ...
+
 
 // *** NOVA FUNÇÃO PARA VERIFICAR E CONCEDER MEDALHAS ***
 function verificarEConcederMedalhas(dados) {
@@ -112,14 +190,17 @@ actionButtons.forEach(button => {
         .catch(error => {
             console.error("Erro ao atualizar XP: ", error);
         });
+        
     });
-});
+
+ });
+
 // --- Lógica para o novo botão de ajuda ---
 ajudaBtn.addEventListener('click', function() {
     alert(
-        'Bem-vindo ao Painel de Progresso!\n\n' +
-        '1. Cole o ID do seu documento do Firestore e clique em "Carregar Progresso".\n' +
-        '2. Use os botões de ação para registrar as tarefas concluídas e ganhar XP.\n' +
-        '3. Seu progresso é salvo automaticamente no Firestore a cada ação.'
-    );
+          'Bem-vindo ao Painel de Progresso!\n\n' +
+          '1. Cole o ID do seu documento do Firestore e clique em "Carregar Progresso".\n' +
+          '2. Use os botões de ação para registrar as tarefas concluídas e ganhar XP.\n' +
+          '3. Seu progresso é salvo automaticamente no Firestore a cada ação.'
+          );
 });

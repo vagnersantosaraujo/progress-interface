@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-T">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Progresso - DevTutor Pro</title>
     <link rel="stylesheet" href="estilo.css">
@@ -11,7 +11,9 @@
     <div class="container">
         <h1>Painel de Progresso</h1>
         
-        <button id="btn-ajuda" class="help-btn">?</button> <div class="progress-display">
+        <div id="roteiro-container"></div>
+        
+        <button id="btn-ajuda" class="help-btn">?</button>
 
         <div class="progress-display">
             <h2>Nível: <span id="display-nivel">--</span></h2>
@@ -20,8 +22,7 @@
 
         <div class="badges-section">
             <h3>Medalhas</h3>
-            <div id="badges-container">
-                </div>
+            <div id="badges-container"></div>
         </div>
 
         <div class="id-input-section">
@@ -29,7 +30,6 @@
             <input type="text" id="firestore-id" placeholder="Cole seu ID do Firestore aqui">
             <button id="carregar-progresso-btn">Carregar Progresso</button>
         </div>
-
 
         <div class="actions">
             <h3>Registrar Ações</h3>
@@ -42,7 +42,8 @@
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script src="config.js"></script> <script src="app.js"></script>
+    <script src="config.js"></script>
     <script src="app.js"></script>
+
 </body>
 </html>

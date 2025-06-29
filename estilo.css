@@ -4,12 +4,15 @@ body {
     color: #1c1e21;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
+    /* REMOVA a linha abaixo para não forçar a centralização vertical */
+    /* align-items: center; */
+    min-height: 100vh; /* MUDE 'height' para 'min-height' */
     margin: 0;
+    padding: 2rem 0; /* ADICIONE esta linha para dar um respiro no topo e na base */
 }
 
 .container {
+    position: relative;
     background-color: #ffffff;
     padding: 2rem;
     border-radius: 8px;
@@ -143,8 +146,98 @@ button:hover {
     top: 15px;
     right: 15px;
     transition: background-color 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .help-btn:hover {
     background-color: #5a6268;
 }
+
+/* Adicione no final do estilo.css */
+
+#roteiro-container {
+    margin: 2rem 0;
+    text-align: left;
+}
+
+.modulo-item {
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 1px solid #ddd;
+}
+
+.modulo-concluido {
+    background-color: #f0fff0;
+    border-color: #28a745;
+    color: #555;
+    text-decoration: line-through;
+}
+
+.modulo-atual {
+    background-color: #e7f3ff;
+    border-color: #0056b3;
+    font-weight: bold;
+}
+
+.modulo-futuro {
+    background-color: #f8f9fa;
+    color: #aaa;
+    border-color: #eee;
+}
+
+.progress-bar-container {
+    background-color: #e9ecef;
+    border-radius: 5px;
+    height: 10px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    background-color: #28a745;
+    height: 100%;
+    width: 0%; /* O JavaScript vai atualizar isso */
+    transition: width 0.5s ease-in-out;
+    border-radius: 5px;
+}
+
+.modulo-concluido span, .modulo-atual span {
+    display: inline-block;
+}
+
+/* Adicione no final do estilo.css */
+
+/* Estilos para telas com largura máxima de 600px (ex: celulares) */
+@media (max-width: 600px) {
+  .container {
+    padding: 1rem; /* Diminui o espaçamento interno em telas pequenas */
+    margin: 1rem;  /* Adiciona uma margem nas laterais */
+  }
+
+  h1 {
+    font-size: 1.5rem; /* Diminui o tamanho do título */
+  }
+}
+/* Adicione ao final do estilo.css */
+
+.progress-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Cria um espaço entre a barra e o texto */
+    margin-top: 8px;
+}
+
+.progress-bar-container {
+    flex-grow: 1; /* Faz a barra ocupar todo o espaço disponível */
+}
+
+.progress-text {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #555;
+} 
