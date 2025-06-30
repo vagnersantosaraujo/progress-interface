@@ -32,31 +32,42 @@ const ajudaBtn = document.querySelector('#btn-ajuda'); // << ADICIONE ESTA LINHA
 let progressoAtual = {};
 let docIdAtual = '';
 
-// --- NOVA FUNÇÃO PARA RENDERIZAR O ROTEIRO ---
+// --- FUNÇÃO PARA RENDERIZAR O ROTEIRO ---
 function renderizarRoteiro(dados) {
-    roteiroContainer.innerHTML = ''; // Limpa o container
-    
+    roteiroContainer.innerHTML = '';
     const moduloAtualNome = dados.modulo_atual;
     const topicosConcluidos = dados.topicos_concluidos || [];
-    
     const indiceModuloAtual = ROTEIRO_APRENDIZAGEM.findIndex(m => m.nome === moduloAtualNome);
 
-    ROTEIRO_APRENDIZAGEM.forEach((modulo, index) => {
-        const moduloElement = document.createElement('div');
-        let classeModulo = 'modulo-item';
-        let conteudoExtra = '';
+    const checkIconSVG = `<svg class="check-icon" ... (código do ícone que já temos) ... </svg>`; // Mantém o ícone
+    const arrowIconSVG = `<svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>`;
 
-        if (index < indiceModuloAtual) {
-            classeModulo += ' modulo-concluido';
-            conteudoExtra = '<span>✔</span>';
-        } else if (index === indiceModuloAtual) {
-            classeModulo += ' modulo-atual';
+    ROTEIRO_APRENDIZAGEM.forEach((modulo, index) => {
+        const moduloWrapper = document.createElement('div');
+        moduloWrapper.className = 'modulo-wrapper';
+
+        const moduloHeader = document.createElement('div');
+        let classeModulo = 'modulo-item';
+
+        // --- Lógica para determinar o estado do módulo (já existente) ---
+        if (index < indiceModuloAtual) { classeModulo += ' modulo-concluido'; }
+        else if (index === indiceModuloAtual) { classeModulo += ' modulo-atual'; }
+        else { classeModulo += ' modulo-futuro'; }
+        moduloHeader.className = classeModulo;
+
+        // --- Construção do Conteúdo do Header do Módulo ---
+        let headerContent = '';
+        const nomeModulo = `<span>${modulo.nome}</span>`;
+        let progressoContent = '';
+
+        if (index <= indiceModuloAtual) { // Mostra progresso para concluídos e atual
             const topicosDoModulo = modulo.topicos;
-            const topicosConcluidosNesteModulo = topicosConcluidos.filter(t => topicosDoModulo.includes(t)).length;
-            const percentual = (topicosDoModulo.length > 0) ? (topicosConcluidosNesteModulo / topicosDoModulo.length) * 100 : 0;
-            
-            // Esta é a linha que precisa ser corrigida no seu app.js
-            conteudoExtra = `
+            let percentual = 100; // Começa em 100% para módulos concluídos
+            if (index === indiceModuloAtual) {
+                const topicosConcluidosNesteModulo = topicosConcluidos.filter(t => topicosDoModulo.includes(t)).length;
+                percentual = (topicosDoModulo.length > 0) ? (topicosConcluidosNesteModulo / topicosDoModulo.length) * 100 : 0;
+            }
+            progressoContent = `
                 <div class="progress-wrapper">
                     <div class="progress-bar-container">
                         <div class="progress-bar-fill" style="width: ${percentual}%;"></div>
@@ -64,13 +75,36 @@ function renderizarRoteiro(dados) {
                     <span class="progress-text">${Math.round(percentual)}%</span>
                 </div>
             `;
-        } else {
-            classeModulo += ' modulo-futuro';
         }
-        
-        moduloElement.className = classeModulo;
-        moduloElement.innerHTML = `<span>${modulo.nome}</span>${conteudoExtra}`;
-        roteiroContainer.appendChild(moduloElement);
+
+        headerContent = `
+            <div class="modulo-info">
+                ${nomeModulo}
+                ${progressoContent}
+            </div>
+            ${arrowIconSVG}
+        `;
+        moduloHeader.innerHTML = headerContent;
+
+        // --- Construção da Lista de Tópicos (inicialmente oculta) ---
+        const topicosList = document.createElement('ul');
+        topicosList.className = 'topicos-list';
+        modulo.topicos.forEach(topico => {
+            const isConcluido = topicosConcluidos.includes(topico);
+            const topicoItem = document.createElement('li');
+            topicoItem.className = isConcluido ? 'topico-concluido' : '';
+            topicoItem.innerText = topico;
+            topicosList.appendChild(topicoItem);
+        });
+
+        // --- Montagem Final e Evento de Clique ---
+        moduloWrapper.appendChild(moduloHeader);
+        moduloWrapper.appendChild(topicosList);
+        roteiroContainer.appendChild(moduloWrapper);
+
+        moduloHeader.addEventListener('click', () => {
+            moduloWrapper.classList.toggle('expanded');
+        });
     });
 }
 

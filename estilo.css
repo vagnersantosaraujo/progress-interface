@@ -155,8 +155,6 @@ button:hover {
     background-color: #5a6268;
 }
 
-/* Adicione no final do estilo.css */
-
 #roteiro-container {
     margin: 2rem 0;
     text-align: left;
@@ -175,7 +173,10 @@ button:hover {
     background-color: #f0fff0;
     border-color: #28a745;
     color: #555;
-    text-decoration: line-through;
+    /* MUDANÇA: Usamos flexbox para alinhar o texto e o ícone */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .modulo-atual {
@@ -210,8 +211,6 @@ button:hover {
     display: inline-block;
 }
 
-/* Adicione no final do estilo.css */
-
 /* Estilos para telas com largura máxima de 600px (ex: celulares) */
 @media (max-width: 600px) {
   .container {
@@ -241,3 +240,62 @@ button:hover {
     font-weight: 600;
     color: #555;
 } 
+/* ADICIONE esta nova regra no final do arquivo */
+.check-icon {
+    width: 24px;
+    height: 24px;
+    fill: #28a745; /* Cor de preenchimento verde para o ícone */
+}
+
+.modulo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.modulo-info {
+    flex-grow: 1;
+}
+
+.arrow-icon {
+    width: 24px;
+    height: 24px;
+    fill: #555;
+    transition: transform 0.3s ease;
+}
+
+.topicos-list {
+    list-style: none;
+    padding-left: 20px;
+    margin-top: 10px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, margin-top 0.4s ease-out, padding 0.4s ease-out;
+}
+
+.topicos-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.topicos-list li.topico-concluido {
+    color: #888;
+    text-decoration: line-through;
+}
+
+.topicos-list li.topico-concluido::before {
+    content: '✔';
+    color: #28a745;
+    margin-right: 10px;
+}
+
+/* Estilos para quando o módulo está expandido */
+.modulo-wrapper.expanded .arrow-icon {
+    transform: rotate(180deg);
+}
+
+.modulo-wrapper.expanded .topicos-list {
+    max-height: 500px; /* Um valor alto para permitir a expansão */
+    padding: 10px 0 10px 20px;
+}
