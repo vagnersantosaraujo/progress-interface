@@ -4,11 +4,10 @@ body {
     color: #1c1e21;
     display: flex;
     justify-content: center;
-    /* REMOVA a linha abaixo para não forçar a centralização vertical */
-    /* align-items: center; */
-    min-height: 100vh; /* MUDE 'height' para 'min-height' */
+    min-height: 100vh;
     margin: 0;
-    padding: 2rem 0; /* ADICIONE esta linha para dar um respiro no topo e na base */
+    padding: 2rem 1rem;
+    box-sizing: border-box;
 }
 
 .container {
@@ -18,7 +17,7 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
     text-align: center;
 }
 
@@ -28,46 +27,12 @@ h1 {
     margin-bottom: 1.5rem;
 }
 
-.progress-display {
-    background-color: #e7f3ff;
-    border-left: 5px solid #0056b3;
-    padding: 1rem;
-    margin-bottom: 1.5rem;
-    border-radius: 5px;
+h2, h3 {
     text-align: left;
 }
 
-.progress-display h2 {
-    margin: 0.5rem 0;
-    font-size: 1.2rem;
-}
-
-.progress-display span {
-    font-weight: 700;
-    color: #004a99;
-}
-
-.id-input-section, .actions {
-    margin-top: 2rem;
-}
-
-label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-}
-
-input[type="text"] {
-    width: calc(100% - 22px);
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
-}
-
+/* --- Botões --- */
 button {
-    background-color: #0056b3;
-    color: white;
     border: none;
     padding: 10px 15px;
     border-radius: 5px;
@@ -79,82 +44,70 @@ button {
 }
 
 button:hover {
-    background-color: #003d82;
+    opacity: 0.9;
 }
+
+#login-btn {
+    background-color: #ffffff;
+    color: #444;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 20px;
+}
+
+#login-btn::before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 20px;
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
 
 .action-btn {
     background-color: #28a745;
+    color: white;
     margin: 5px;
 }
 
-.action-btn:hover {
-    background-color: #218838;
-}
-
-/* ... cole no final do estilo.css ... */
-
-.badges-section {
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid #ddd;
-}
-
-#badges-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-    margin-top: 1rem;
-}
-
-.badge {
-    background-color: #ffc107;
-    color: #333;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    font-size: 1.2rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    cursor: help;
-}
-
-/* Estilo para o botão de bônus de streak */
 #btn-streak {
-    background-color: #17a2b8; /* Um tom de azul-petróleo */
+    background-color: #17a2b8;
 }
 
-#btn-streak:hover {
-    background-color: #138496;
-}
-
-/* Estilo para o botão de ajuda */
 .help-btn {
-    background-color: #6c757d; /* Cinza */
+    background-color: #6c757d;
     color: white;
-    border: none;
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: bold;
     position: absolute;
     top: 15px;
     right: 15px;
-    transition: background-color 0.2s;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0;
 }
 
-.help-btn:hover {
-    background-color: #5a6268;
+/* --- Seções de Conteúdo --- */
+#main-content {
+    text-align: left;
 }
 
+.progress-display, .badges-section, .actions {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+}
+
+/* --- Roteiro --- */
 #roteiro-container {
     margin: 2rem 0;
     text-align: left;
@@ -167,16 +120,16 @@ button:hover {
     font-weight: 500;
     transition: all 0.3s ease;
     border: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
 }
 
 .modulo-concluido {
     background-color: #f0fff0;
     border-color: #28a745;
     color: #555;
-    /* MUDANÇA: Usamos flexbox para alinhar o texto e o ícone */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
 .modulo-atual {
@@ -191,69 +144,6 @@ button:hover {
     border-color: #eee;
 }
 
-.progress-bar-container {
-    background-color: #e9ecef;
-    border-radius: 5px;
-    height: 10px;
-    margin-top: 8px;
-    overflow: hidden;
-}
-
-.progress-bar-fill {
-    background-color: #28a745;
-    height: 100%;
-    width: 0%; /* O JavaScript vai atualizar isso */
-    transition: width 0.5s ease-in-out;
-    border-radius: 5px;
-}
-
-.modulo-concluido span, .modulo-atual span {
-    display: inline-block;
-}
-
-/* Estilos para telas com largura máxima de 600px (ex: celulares) */
-@media (max-width: 600px) {
-  .container {
-    padding: 1rem; /* Diminui o espaçamento interno em telas pequenas */
-    margin: 1rem;  /* Adiciona uma margem nas laterais */
-  }
-
-  h1 {
-    font-size: 1.5rem; /* Diminui o tamanho do título */
-  }
-}
-/* Adicione ao final do estilo.css */
-
-.progress-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Cria um espaço entre a barra e o texto */
-    margin-top: 8px;
-}
-
-.progress-bar-container {
-    flex-grow: 1; /* Faz a barra ocupar todo o espaço disponível */
-}
-
-.progress-text {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #555;
-} 
-/* ADICIONE esta nova regra no final do arquivo */
-.check-icon {
-    width: 24px;
-    height: 24px;
-    fill: #28a745; /* Cor de preenchimento verde para o ícone */
-}
-
-.modulo-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-}
-
 .modulo-info {
     flex-grow: 1;
 }
@@ -263,39 +153,126 @@ button:hover {
     height: 24px;
     fill: #555;
     transition: transform 0.3s ease;
+    margin-left: 10px;
+}
+
+.check-icon {
+    width: 20px;
+    height: 20px;
+    fill: #28a745;
+    margin-left: 8px;
+    vertical-align: middle; /* << ADICIONE ESTA LINHA */
 }
 
 .topicos-list {
     list-style: none;
     padding-left: 20px;
-    margin-top: 10px;
+    margin: 0;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.4s ease-out, margin-top 0.4s ease-out, padding 0.4s ease-out;
+    transition: max-height 0.4s ease-out, margin-top 0.4s ease-out;
 }
 
 .topicos-list li {
     padding: 8px 0;
     border-bottom: 1px solid #f0f0f0;
+    color: #aaa;
+}
+
+.topicos-list li:last-child {
+    border-bottom: none;
+}
+
+.topicos-list li::before {
+    content: '⚪';
+    color: #ddd;
+    margin-right: 10px;
 }
 
 .topicos-list li.topico-concluido {
-    color: #888;
-    text-decoration: line-through;
+    color: #333;
 }
 
 .topicos-list li.topico-concluido::before {
     content: '✔';
     color: #28a745;
-    margin-right: 10px;
 }
 
-/* Estilos para quando o módulo está expandido */
 .modulo-wrapper.expanded .arrow-icon {
     transform: rotate(180deg);
 }
 
 .modulo-wrapper.expanded .topicos-list {
-    max-height: 500px; /* Um valor alto para permitir a expansão */
-    padding: 10px 0 10px 20px;
+    max-height: 500px;
+    margin-top: 10px;
+}
+
+/* --- Barra de Progresso --- */
+.progress-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.progress-bar-container {
+    flex-grow: 1;
+    background-color: #e9ecef;
+    border-radius: 5px;
+    height: 10px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    background-color: #28a745;
+    height: 100%;
+    width: 0%;
+    transition: width 0.5s ease-in-out;
+    border-radius: 5px;
+}
+
+.progress-text {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #555;
+}
+
+/* --- Seção de Perfil do Usuário --- */
+#user-profile {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 15px;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: #f8f9fa;
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+}
+
+#user-photo {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+#user-name {
+    font-weight: 600;
+    color: #333;
+}
+
+#logout-btn {
+    background-color: #6c757d;
+    color: white;
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 15px;
+    margin-top: 0;
+}
+
+/* Esconde o botão de ajuda quando o perfil estiver visível */
+#user-profile:not([style*="display: none"]) ~ #btn-ajuda {
+    display: none;
 }

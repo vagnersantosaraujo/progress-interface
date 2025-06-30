@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-T">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Progresso - DevTutor Pro</title>
     <link rel="stylesheet" href="estilo.css">
@@ -9,39 +9,42 @@
 <body>
 
     <div class="container">
-        <h1>Painel de Progresso</h1>
         
-        <div id="roteiro-container"></div>
+        <div id="user-profile" style="display: none;">
+            <img id="user-photo" src="" alt="Foto do Usuário">
+            <span id="user-name"></span>
+            <button id="logout-btn">Sair</button>
+        </div>
+        
+        <h1>Painel de Progresso</h1>
         
         <button id="btn-ajuda" class="help-btn">?</button>
 
-        <div class="progress-display">
-            <h2>Nível: <span id="display-nivel">--</span></h2>
-            <h2>XP: <span id="display-xp">--</span></h2>
-        </div>
-
-        <div class="badges-section">
-            <h3>Medalhas</h3>
-            <div id="badges-container"></div>
-        </div>
-
-        <div class="id-input-section">
-            <label for="firestore-id">Seu ID do Documento:</label>
-            <input type="text" id="firestore-id" placeholder="Cole seu ID do Firestore aqui">
-            <button id="carregar-progresso-btn">Carregar Progresso</button>
-        </div>
-
-        <div class="actions">
-            <h3>Registrar Ações</h3>
-            <button id="btn-licao" class="action-btn" data-xp="10">Completei uma Lição</button>
-            <button id="btn-quiz" class="action-btn" data-xp="25">Passei no Quiz (>=80%)</button>
-            <button id="btn-desafio" class="action-btn" data-xp="50">Concluí um Desafio</button>
-            <button id="btn-streak" class="action-btn" data-xp="5">Mantive o Streak Diário</button>
+        <div id="roteiro-container"></div>
+        
+        <div id="main-content" style="display: none;">
+            <div class="progress-display">
+                <h2>Nível: <span id="display-nivel">--</span></h2>
+                <h2>XP: <span id="display-xp">--</span></h2>
+            </div>
+            <div class="badges-section">
+                <h3>Medalhas</h3>
+                <div id="badges-container"></div>
+            </div>
+            <div class="actions">
+                <h3>Registrar Ações</h3>
+                <button id="btn-licao" class="action-btn" data-xp="10">Completei uma Lição</button>
+                <button id="btn-quiz" class="action-btn" data-xp="25">Passei no Quiz (>=80%)</button>
+                <button id="btn-desafio" class="action-btn" data-xp="50">Concluí um Desafio</button>
+                <button id="btn-streak" class="action-btn" data-xp="5">Mantive o Streak Diário</button>
+            </div>
         </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
     <script src="config.js"></script>
     <script src="app.js"></script>
 
