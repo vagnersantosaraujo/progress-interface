@@ -276,3 +276,93 @@ button:hover {
 #user-profile:not([style*="display: none"]) ~ #btn-ajuda {
     display: none;
 }
+
+/* --- Seção de Chat com Gemini --- */
+#chat-section {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+}
+
+#chat-container {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+}
+
+#chat-history {
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: auto; /* Adiciona scroll se as mensagens forem muitas */
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#chat-form {
+    display: flex;
+    border-top: 1px solid #ddd;
+}
+
+#chat-input {
+    flex-grow: 1;
+    border: none;
+    padding: 15px;
+    font-size: 1rem;
+    outline: none; /* Remove a borda azul ao focar */
+}
+
+#chat-form button {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 0 20px;
+    border-radius: 0;
+    margin: 0;
+}
+
+.chat-message {
+    padding: 10px 15px;
+    border-radius: 18px;
+    max-width: 80%;
+    line-height: 1.5;
+}
+
+.chat-message.user {
+    background-color: #007bff;
+    color: white;
+    align-self: flex-end; /* Alinha a mensagem do usuário à direita */
+    border-bottom-right-radius: 4px;
+}
+
+.chat-message.model {
+    background-color: #e9ecef;
+    color: #333;
+    align-self: flex-start; /* Alinha a mensagem da IA à esquerda */
+    border-bottom-left-radius: 4px;
+}
+
+/* Estilos para o conteúdo renderizado do Markdown */
+.chat-message.model pre {
+    background-color: #2d2d2d;
+    color: #f8f8f2;
+    padding: 15px;
+    border-radius: 8px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.chat-message.model code {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.chat-message.model blockquote {
+    border-left: 4px solid #ccc;
+    padding-left: 15px;
+    margin-left: 0;
+    color: #555;
+}

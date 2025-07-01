@@ -23,6 +23,9 @@ const displayXp = document.querySelector('#display-xp');
 const badgesContainer = document.querySelector('#badges-container');
 const actionButtons = document.querySelectorAll('.action-btn');
 const ajudaBtn = document.querySelector('#btn-ajuda');
+const chatForm = document.querySelector('#chat-form');
+const chatInput = document.querySelector('#chat-input');
+const chatHistory = document.querySelector('#chat-history')
 
 // --- Variáveis de Estado Global ---
 let progressoAtual = {};
@@ -84,8 +87,6 @@ loginBtn.addEventListener('click', () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithPopup(provider).catch(error => console.error("Erro no login:", error));
 });
-
-// --- Funções Principais da Aplicação ---
 
 function carregarProgresso(userId) {
     if (!userId) return;
@@ -180,7 +181,6 @@ function renderizarRoteiro(dados) {
         });
     });
 }
-/*CÓDIGO NOVO FIM*/
 
 
 function exibirMedalhas(dados) {
@@ -200,7 +200,6 @@ function exibirMedalhas(dados) {
     }
 }
 
-// SUBSTITUA toda a sua seção actionButtons.forEach por este bloco:
 
 actionButtons.forEach(button => {
     button.addEventListener('click', function() {
@@ -263,4 +262,103 @@ ajudaBtn.addEventListener('click', function() {
         '2. Use os botões de ação para registrar as tarefas concluídas e ganhar XP.\n' +
         '3. Acompanhe sua jornada através dos módulos expansíveis.'
     );
+});
+
+
+// --- LÓGICA DO CHAT COM GEMINI ---
+
+// Função para adicionar mensagens na tela do chat
+function adicionarMensagemAoHistorico(texto, autor) {
+    const messageElement = document.createElement('div');
+    messageElement.className = `chat-message ${autor}`; // autor será 'user' ou 'model'
+    messageElement.innerHTML = marked.parse(texto);
+    chatHistory.appendChild(messageElement);
+    // Rola o chat para a última mensagem
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+}
+
+// Função que envia a mensagem para a API do Gemini
+// SUBSTITUA toda a sua função enviarMensagemParaGemini por esta:
+// SUBSTITUA toda a sua função enviarMensagemParaGemini por esta versão final:
+
+async function enviarMensagemParaGemini(prompt) {
+    adicionarMensagemAoHistorico(prompt, 'user');
+    chatInput.value = '';
+
+    const loadingElement = document.createElement('div');
+    loadingElement.className = 'chat-message model';
+    loadingElement.innerText = 'Digitando...';
+    chatHistory.appendChild(loadingElement);
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+
+    // --- NOVA LÓGICA: CONSTRUÇÃO DINÂMICA DO CONTEXTO ---
+    const topicosConcluidosTexto = progressoAtual.topicos_concluidos && progressoAtual.topicos_concluidos.length > 0
+        ? progressoAtual.topicos_concluidos.join(', ')
+        : "Nenhum tópico concluído ainda.";
+
+    const instrucaoDeSistemaDinamica = `
+        Você é o "DevTutor Pro", um tutor de programação sênior e paciente.
+        Responda sempre em português do Brasil.
+        Seu foco principal é em desenvolvimento de software, incluindo HTML, CSS, JavaScript, Git, React e React Native.
+        Use formatação Markdown para melhorar a legibilidade, incluindo **negrito** para termos importantes e blocos de código (usando três crases) para exemplos.
+        Mantenha um tom encorajador e positivo.
+
+        ---
+        CONTEXTO ATUAL DO ALUNO:
+        - Módulo Atual: ${progressoAtual.modulo_atual}
+        - Tópico Atual: ${progressoAtual.topico_atual}
+        - Tópicos Já Concluídos: ${topicosConcluidosTexto}
+        ---
+
+        Leve este contexto em consideração para não sugerir tópicos que o aluno já dominou e para adaptar suas explicações ao nível atual dele.
+    `;
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
+    
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                contents: [{
+                    parts: [{
+                        text: prompt
+                    }]
+                }],
+                systemInstruction: {
+                    parts: [{
+                        text: instrucaoDeSistemaDinamica // Usando a nova instrução dinâmica
+                    }]
+                }
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.candidates && data.candidates.length > 0) {
+            const textoDoModelo = data.candidates[0].content.parts[0].text;
+            chatHistory.removeChild(loadingElement);
+            adicionarMensagemAoHistorico(textoDoModelo, 'model');
+        } else {
+            console.error("API retornou um erro:", data);
+            throw new Error("Resposta da API inválida ou contém um erro.");
+        }
+
+    } catch (error) {
+        console.error("Erro ao chamar a API do Gemini:", error);
+        chatHistory.removeChild(loadingElement);
+        adicionarMensagemAoHistorico("Desculpe, não consegui processar sua pergunta. Verifique o console para detalhes do erro.", 'model');
+    }
+}
+
+
+// Ouve o evento de "submit" do formulário
+chatForm.addEventListener('submit', (event) => {
+    event.preventDefault(); // <<< A LINHA MAIS IMPORTANTE! Impede o recarregamento da página.
+    const userPrompt = chatInput.value.trim();
+    if (userPrompt) {
+        enviarMensagemParaGemini(userPrompt);
+    }
 });
