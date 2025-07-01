@@ -14,7 +14,11 @@ const db = firebase.firestore();
 const auth = firebase.auth();
 console.log("Firebase conectado e pronto para usar!");
 
+
+
 // --- Seleção de Elementos ---
+const somDeConquista = new Audio('https://www.myinstants.com/media/sounds/wrong-answer-sound-effect.mp3');
+somDeConquista.volume = 0.5; // Ajusta o volume para não ser muito alto
 const appContainer = document.querySelector('.container');
 const mainContent = document.querySelector('#main-content');
 const roteiroContainer = document.querySelector('#roteiro-container');
@@ -247,6 +251,7 @@ actionButtons.forEach(button => {
         db.collection('progresso_alunos').doc(docIdAtual).update(atualizacoes)
         .then(() => {
             console.log("Progresso atualizado com sucesso!");
+            somDeConquista.play(); //Toca som
             // Força a recarga dos dados do Firestore para garantir que a UI reflita o estado mais recente
             carregarProgresso(docIdAtual);
         })
